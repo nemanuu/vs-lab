@@ -8,15 +8,15 @@ the masters course 'Distributed Information Systems' at the University of Applie
 
 ##Structure of the project
 There are five folders:
-- [./category] for the Spring Category Microservie
-- [./product] for the Spring Product Microservice
-- [./database] for everthing related to the database
-- [./webshop] for the UI and user management part of the webshop
-- [./docker] for everthing related to the docker setup
+- [category](./category) for the Spring Category Microservie
+- [product](./product) for the Spring Product Microservice
+- [database](./database) for everthing related to the database
+- [webshop](./webshop) for the UI and user management part of the webshop
+- [docker](./docker) for everthing related to the docker setup
 
 
 ### Spring projects
-Both Category and Product microservices use Spring with Version 2.2.6 and Java 17. The inital structure was created with (https://start.spring.io/).
+Both Category and Product microservices use Spring with Version **2.2.6** and **Java 17**. The inital structure was created with [Spring Intializr](https://start.spring.io/).
 
 
 To use Spring you need Java and Maven.
