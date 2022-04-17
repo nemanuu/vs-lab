@@ -8,11 +8,11 @@ the masters course 'Distributed Information Systems' at the University of Applie
 
 ## Structure of the project
 There are five folders:
-- [category](./category) for the Spring Category Microservie
-- [product](./product) for the Spring Product Microservice
-- [database](./database) for everthing related to the database
-- [webshop](./webshop) for the UI and user management part of the webshop
-- [docker](./docker) for everthing related to the docker setup
+- [category](./category) for the Spring **Category Microservice**
+- [product](./product) for the Spring **Product Microservice**
+- [database](./database) for everthing related to the **database**
+- [webshop](./webshop) for the **UI** and **user management** part of the webshop
+- [docker](./docker) for everthing related to the **docker** setup
 
 
 ### Spring projects
