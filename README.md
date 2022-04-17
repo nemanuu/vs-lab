@@ -6,7 +6,7 @@ This project is the quick setup of the legacy webshop of
 the masters course 'Distributed Information Systems' at the University of Applied Sciences (Karlsruhe).
 
 
-##Structure of the project
+## Structure of the project
 There are five folders:
 - [category](./category) for the Spring Category Microservie
 - [product](./product) for the Spring Product Microservice
