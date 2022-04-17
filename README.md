@@ -22,6 +22,24 @@ Both Category and Product microservices use Spring with Version **2.2.6** and **
 To use Spring you need Java and Maven.
 Install Maven by following the instructions [here](https://maven.apache.org/guides/getting-started/windows-prerequisites.html) and [here](https://maven.apache.org/install.html).
 
+
+#### Starting the product microservice 
+
+Start the application from you preferred IDE or execute in the [product](./product) folder
+```bash
+./mvnw spring-boot:run
+```
+
+Test the application by opening
+```
+http://localhost:8080/products
+```
+Get a product via an id (Replace 42 with a valid id)
+```
+http://localhost:8080/product?id=42
+```
+
+
 # <a name="quick-start"></a>Quick Start (docker-hub)
 - Copy the `docker-compose.yml` locally in a desired folder and run
 ```bash
