@@ -12,7 +12,7 @@ There are five folders:
 - [product](./product) for the Spring **Product Microservice**
 - [database](./database) for everthing related to the **database**
 - [webshop](./webshop) for the **UI** and **user management** part of the webshop
-- [docker](./docker) for everthing related to the **docker** setup
+- [docker](./docker) for everthing related to the **docker** setup (-> the dockerfiles)
 
 
 ### Spring projects
@@ -23,8 +23,8 @@ To use Spring you need Java and Maven.
 Install Maven by following the instructions [here](https://maven.apache.org/guides/getting-started/windows-prerequisites.html) and [here](https://maven.apache.org/install.html).
 
 
-#### Starting the product microservice 
-
+#### Starting the product microservice without docker
+Use these commands if you want to test if the product service runs independantly.
 Start the application from you preferred IDE or execute in the [product](./product) folder
 ```bash
 ./mvnw spring-boot:run
@@ -32,15 +32,16 @@ Start the application from you preferred IDE or execute in the [product](./produ
 
 Test the application by opening
 ```
-http://localhost:8080/products
+http://localhost:8081/products
 ```
 Get a product via an id (Replace 42 with a valid id)
 ```
-http://localhost:8080/product?id=42
+http://localhost:8081/product?id=42
 ```
 
 
 # <a name="quick-start"></a>Quick Start (docker-hub)
+
 - Copy the `docker-compose.yml` locally in a desired folder and run
 ```bash
 $ docker-compose up -d
@@ -49,6 +50,15 @@ $ docker-compose logs -tf
 # to shutdown
 $ docker-compose down
 ```
+
+Docker needs a jar for the product-service. Currently, I'm not sure if/how docker can do this on its own.
+Please test if `docker-compose -f docker-compose-local.yml up -d` works to start all containers.
+If docker can not find the jar for the product service, run the following in the [product](./product) folder to generate a jar in the product/target folder.
+```bash
+mvn clean package
+```
+Then update this readme.
+
 
 ### <a name="built-it-on-your-own"></a>Built it on your own
 - Run `docker-compose -f docker-compose-local.yml up -d` which will
