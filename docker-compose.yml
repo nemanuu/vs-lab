@@ -8,7 +8,16 @@ services:
       local_dev_net:
           aliases:
               - legacywebshop
-
+              
+  product:
+    image: product/product:latest
+    ports:
+      - "8081:8081"
+    networks:
+      local_dev_net:
+          aliases:
+              - product
+  
   web-shop-db-image:
     image: mavogel/hska-vis-web-shop-db-image
     volumes:
