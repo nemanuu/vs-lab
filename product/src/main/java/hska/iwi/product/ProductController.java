@@ -1,5 +1,7 @@
 package hska.iwi.product;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Streamable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -8,61 +10,71 @@ import java.util.stream.Collectors;
 @RestController
 public class ProductController implements ProductManager {
 
-    private static List<Product> testProductData = List.of(
-            new Product("Pommes", 5, "Lecker Pommes!"),
-            new Product("Salat", 2, "Grüner Salat"));
+    @Autowired
+    private ProductRepository productRepository;
+
+    //private static List<Product> testProductData = List.of(
+    //        new Product("Pommes", 5, "Lecker Pommes!"),
+    //       new Product("Salat", 2, "Grüner Salat"));
 
     @Override
     @GetMapping("/products")
     public List<Product> getProducts() {
-        return testProductData;
+        return Streamable.of(productRepository.findAll()).toList();
     }
 
     @Override
-    @GetMapping("/product")
+    @GetMapping("/products/{id}")
     public Product getProductById(@RequestParam int id) {
-        return testProductData.stream()
-                .filter(x -> x.getId() == id)
-                .findFirst()
-                .orElse(null);
+        return productRepository.findById(id).get();
     }
 
     @Override
-    //TODO
-    public Product getProductByName(@RequestParam String name) {
-        return testProductData.stream()
+    @GetMapping("/products/find")
+    public Product getProductByName(@RequestParam("name") String name) {
+        List<Product> products = getProducts();
+
+        return products.stream()
                 .filter(x -> x.getName().equals(name))
                 .findFirst()
                 .orElse(null);
     }
 
     @Override
-    //TODO
-    public List<Product> getProductsForSearchValues( String searchValue, Double searchMinPrice, Double searchMaxPrice) {
-        return testProductData.stream()
-                .filter(x -> x.getName().contains(searchValue))
+    @GetMapping("/products/search")
+    public List<Product> getProductsForSearchValues(@RequestParam("value") String value, @RequestParam("minPrice") Double minPrice, @RequestParam("maxPrice") Double maxPrice) {
+        List<Product> products = getProducts();
+
+        return products.stream()
+                .filter(x -> x.getName().contains(value))
                 .collect(Collectors.toList());
     }
 
     @Override
-    @PutMapping("/product")
-    public int addProduct(String name, double price, int categoryId, String details) {
-        testProductData.add(new Product(name, price, details));
+    @PostMapping("/product")
+    public int addProduct(@RequestParam String name, @RequestParam double price, @RequestParam int categoryId, @RequestParam String details) {
+        Product product = new Product().setName(name).setPrice(price).setDetails(details).setCategoryId(categoryId);
+        productRepository.save(product);
+
+        //testProductData.add(new Product(name, price, details));
         return 0;
     }
 
     @Override
-    public boolean deleteProductsByCategoryId(int categoryId) {
-        //TODO
-        return false;
+    @DeleteMapping("/products")
+    public boolean deleteProductsByCategoryId(@RequestParam("categoryId") int categoryId) {
+        List<Product> products = getProducts().stream().filter(x -> x.getCategoryId() == categoryId).collect(Collectors.toList());
+        products.forEach(p -> productRepository.delete(p));
+        return products.size() == 0 ? false : true;
     }
 
     @Override
-    @DeleteMapping("/product")
-    public void deleteProductById(int id) {
+    @DeleteMapping("/products/{id}")
+    public void deleteProductById(@RequestParam int id) {
         Product product = getProductById(id);
+
         if (product != null) {
-            testProductData.remove(product);
+            productRepository.delete(product);
         }
     }
 }

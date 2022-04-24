@@ -1,28 +1,56 @@
 package hska.iwi.product;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
 public class Product {
-    public Product(String name, double price, String details) {
+    /*public Product(String name, double price, String details) {
         this.name = name;
         this.price = price;
         this.details = details;
-        this.id = (int) (Math.random() * 100);
-    }
+    }*/
 
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+
+    private Integer categoryId;
 
     private String name;
 
-    private double price;
+    private Double price;
 
     private String details;
 
-    public Product() {
-
-    }
-
     public String getName() {
         return name;
+    }
+
+    public Product setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public Product setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+        return this;
+    }
+
+    public Product setPrice(Double price) {
+        this.price = price;
+        return this;
+    }
+
+    public Product setDetails(String details) {
+        this.details = details;
+        return this;
     }
 
     public double getPrice() {
@@ -33,7 +61,7 @@ public class Product {
         return details;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 }
