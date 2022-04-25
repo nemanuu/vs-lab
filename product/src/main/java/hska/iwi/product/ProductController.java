@@ -2,9 +2,12 @@ package hska.iwi.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -25,7 +28,11 @@ public class ProductController implements ProductManager {
 
     @Override
     @GetMapping("/products/{id}")
-    public Product getProductById(@RequestParam int id) {
+    public Product getProductById(@PathVariable("id") int id) {
+        Optional<Product> product = productRepository.findById(id);
+        if(product.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No such product");
+        }
         return productRepository.findById(id).get();
     }
 
@@ -51,8 +58,8 @@ public class ProductController implements ProductManager {
     }
 
     @Override
-    @PostMapping("/product")
-    public int addProduct(@RequestParam String name, @RequestParam double price, @RequestParam int categoryId, @RequestParam String details) {
+    @PostMapping("/products")
+    public int addProduct(@RequestParam("name") String name, @RequestParam("price") double price, @RequestParam("categoryId") int categoryId, @RequestParam("details") String details) {
         Product product = new Product().setName(name).setPrice(price).setDetails(details).setCategoryId(categoryId);
         productRepository.save(product);
 
@@ -70,7 +77,7 @@ public class ProductController implements ProductManager {
 
     @Override
     @DeleteMapping("/products/{id}")
-    public void deleteProductById(@RequestParam int id) {
+    public void deleteProductById(@PathVariable("id") int id) {
         Product product = getProductById(id);
 
         if (product != null) {

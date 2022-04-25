@@ -2,9 +2,12 @@ package hska.iwi.category;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class CategoryController implements CategoryManager {
@@ -21,7 +24,7 @@ public class CategoryController implements CategoryManager {
 
     @Override
     @DeleteMapping("categories/{id}")
-    public void deleteCategoryById(@RequestParam int id) {
+    public void deleteCategoryById(@PathVariable("id") int id) {
         Category category = getCategory(id);
         if(category != null) {
             categoryRepository.delete(category);
@@ -37,7 +40,11 @@ public class CategoryController implements CategoryManager {
 
     @Override
     @GetMapping("/categories/{id}")
-    public Category getCategory(@RequestParam int id) {
+    public Category getCategory(@PathVariable("id") int id) {
+        Optional<Category> category = categoryRepository.findById(id);
+        if(category.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No such product");
+        }
         return categoryRepository.findById(id).get();
     }
 
