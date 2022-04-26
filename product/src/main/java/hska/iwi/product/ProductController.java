@@ -14,11 +14,9 @@ import java.util.stream.Collectors;
 public class ProductController implements ProductManager {
 
     @Autowired
+    private CategoryWebClient categoryWebClient;
+    @Autowired
     private ProductRepository productRepository;
-
-    //private static List<Product> testProductData = List.of(
-    //        new Product("Pommes", 5, "Lecker Pommes!"),
-    //       new Product("Salat", 2, "Grüner Salat"));
 
     @Override
     @GetMapping("/products")
@@ -60,6 +58,10 @@ public class ProductController implements ProductManager {
     @Override
     @PostMapping("/products")
     public int addProduct(@RequestParam("name") String name, @RequestParam("price") double price, @RequestParam("categoryId") int categoryId, @RequestParam("details") String details) {
+
+        if (!categoryWebClient.categoryExists(categoryId)) {
+            throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "CategoryId does not exist.");
+        }
         Product product = new Product().setName(name).setPrice(price).setDetails(details).setCategoryId(categoryId);
         productRepository.save(product);
         return 0;

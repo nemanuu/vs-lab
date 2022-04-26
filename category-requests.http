@@ -26,11 +26,11 @@ POST http://localhost:8082/categories?name=Milchprodukte
 ###
 
 # GET (FIND) Category by name
-GET http://localhost:8082/categories?name=Salatprodukte
+GET http://localhost:8082/categories/find?name=Salatprodukte
 
 ###
 
 # DELETE Kategorie (1=Kartoffel, 2=Salat, 3=Milch)
-DELETE http://localhost:8082/categories/2
+DELETE http://localhost:8082/categories/1
 
 ###
