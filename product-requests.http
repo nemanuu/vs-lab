@@ -1,0 +1,76 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+# GET products
+GET http://localhost:8081/products/
+
+###
+
+# POST Pommes
+POST http://localhost:8081/products?name=Premium Pommes&price=11&categoryId=1&details=Lecker Premium Pommes!
+
+###
+
+# POST Tiefkühlpommes
+POST http://localhost:8081/products?name=Tiefkühl-Pommes&price=3&categoryId=1&details=Tiefkühlfritten!
+
+###
+
+# POST Süßkartoffeln
+POST http://localhost:8081/products?name=Süßkartoffel&price=6&categoryId=1&details=wie süß!
+
+###
+
+# POST Feldsalat
+POST http://localhost:8081/products?name=Feldsalat&price=4&categoryId=2&details=Feldfrisch!
+
+###
+
+# POST Caesar-Salat
+POST http://localhost:8081/products?name=Caesar-Salat&price=12&categoryId=2&details=Knackfrisch!
+
+###
+
+# POST Porridge
+POST http://localhost:8081/products?name=Porridge&price=5&categoryId=3&details=Creamy!
+
+###
+
+# POST Bircher
+POST http://localhost:8081/products?name=Birchermüsli&price=6&categoryId=3&details=Knackig!
+
+###
+
+# POST Mandelmilch
+POST http://localhost:8081/products?name=Mandelmilch&price=2&categoryId=3&details=Laktosefrei!
+
+###
+
+# GET by id
+GET http://localhost:8081/products/5
+
+###
+
+# GET (FIND) by name
+GET http://localhost:8081/products?name=Birchermüsli
+
+###
+
+# GET (FIND) by search values
+GET http://localhost:8081/products/search?value=Porridge&minPrice=2&maxPrice=15
+
+###
+
+# DELETE by id
+DELETE http://localhost:8081/products/2
+
+###
+
+# DELETE by category id
+DELETE http://localhost:8081/products?categoryId=2
+
+###
