@@ -13,6 +13,9 @@ import java.util.Optional;
 public class CategoryController implements CategoryManager {
 
     @Autowired
+    private ProductWebClient productWebClient;
+
+    @Autowired
     private CategoryRepository categoryRepository;
 
     @Override
@@ -27,8 +30,8 @@ public class CategoryController implements CategoryManager {
     public void deleteCategoryById(@PathVariable("id") int id) {
         Category category = getCategory(id);
         if(category != null) {
+            productWebClient.deleteProducts(id);
             categoryRepository.delete(category);
-            // TODO Product Microservice aufrufen, um Produkte zu löschen
         }
     }
 

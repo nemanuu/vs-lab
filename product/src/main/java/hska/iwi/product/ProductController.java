@@ -30,7 +30,7 @@ public class ProductController implements ProductManager {
     @GetMapping("/products/{id}")
     public Product getProductById(@PathVariable("id") int id) {
         Optional<Product> product = productRepository.findById(id);
-        if(product.isEmpty()) {
+        if (product.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No such product");
         }
         return productRepository.findById(id).get();
@@ -62,8 +62,6 @@ public class ProductController implements ProductManager {
     public int addProduct(@RequestParam("name") String name, @RequestParam("price") double price, @RequestParam("categoryId") int categoryId, @RequestParam("details") String details) {
         Product product = new Product().setName(name).setPrice(price).setDetails(details).setCategoryId(categoryId);
         productRepository.save(product);
-
-        //testProductData.add(new Product(name, price, details));
         return 0;
     }
 
@@ -72,7 +70,7 @@ public class ProductController implements ProductManager {
     public boolean deleteProductsByCategoryId(@RequestParam("categoryId") int categoryId) {
         List<Product> products = getProducts().stream().filter(x -> x.getCategoryId() == categoryId).collect(Collectors.toList());
         products.forEach(p -> productRepository.delete(p));
-        return products.size() == 0 ? false : true;
+        return products.size() != 0;
     }
 
     @Override
