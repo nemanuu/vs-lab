@@ -26,7 +26,7 @@ POST http://localhost:8082/categories?name=Milchprodukte
 ###
 
 # GET (FIND) Category by name
-GET http://localhost:8082/categories/find?name=Salatprodukte
+GET http://localhost:8082/categories?name=Salatprodukte
 
 ###
 

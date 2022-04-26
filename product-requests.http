@@ -56,12 +56,12 @@ GET http://localhost:8081/products/5
 ###
 
 # GET (FIND) by name
-GET http://localhost:8081/products/find?name=Birchermüsli
+GET http://localhost:8081/products?name=Birchermüsli
 
 ###
 
 # GET (FIND) by search values
-GET http://localhost:8081/products/search?value=Birchermüsli&minPrice=2&maxPrice=15
+GET http://localhost:8081/products?minPrice=2&maxPrice=10
 
 ###
 

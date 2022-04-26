@@ -8,7 +8,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 public class ProductController implements ProductManager {
@@ -20,8 +19,17 @@ public class ProductController implements ProductManager {
 
     @Override
     @GetMapping("/products")
-    public List<Product> getProducts() {
-        return Streamable.of(productRepository.findAll()).toList();
+    public List<Product> getProducts(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "value", required = false) String value,
+            @RequestParam(value = "min-price", required = false) Double minPrice,
+            @RequestParam(value = "max-price", required = false) Double maxPrice) {
+        return Streamable.of(productRepository.findAll())
+                .filter(p -> value == null || p.getName().contains(value))
+                .filter(p -> name == null || p.getName().equals(name))
+                .filter(p -> minPrice == null || p.getPrice() >= minPrice)
+                .filter(p -> maxPrice == null || p.getPrice() <= maxPrice)
+                .toList();
     }
 
     @Override
@@ -32,27 +40,6 @@ public class ProductController implements ProductManager {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No such product");
         }
         return productRepository.findById(id).get();
-    }
-
-    @Override
-    @GetMapping("/products/find")
-    public Product getProductByName(@RequestParam("name") String name) {
-        List<Product> products = getProducts();
-
-        return products.stream()
-                .filter(x -> x.getName().equals(name))
-                .findFirst()
-                .orElse(null);
-    }
-
-    @Override
-    @GetMapping("/products/search")
-    public List<Product> getProductsForSearchValues(@RequestParam("value") String value, @RequestParam("minPrice") Double minPrice, @RequestParam("maxPrice") Double maxPrice) {
-        List<Product> products = getProducts();
-
-        return products.stream()
-                .filter(x -> x.getName().contains(value))
-                .collect(Collectors.toList());
     }
 
     @Override
@@ -70,8 +57,11 @@ public class ProductController implements ProductManager {
     @Override
     @DeleteMapping("/products")
     public boolean deleteProductsByCategoryId(@RequestParam("categoryId") int categoryId) {
-        List<Product> products = getProducts().stream().filter(x -> x.getCategoryId() == categoryId).collect(Collectors.toList());
-        products.forEach(p -> productRepository.delete(p));
+        List<Product> products = Streamable.of(productRepository.findAll())
+                .stream()
+                .filter(x -> x.getCategoryId() == categoryId)
+                .toList();
+        productRepository.deleteAll(products);
         return products.size() != 0;
     }
 

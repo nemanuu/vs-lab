@@ -37,8 +37,10 @@ public class CategoryController implements CategoryManager {
 
     @Override
     @GetMapping("/categories")
-    public List<Category> getCategories() {
-        return Streamable.of(categoryRepository.findAll()).toList();
+    public List<Category> getCategories(@RequestParam(value = "name", required = false) String name) {
+        return Streamable.of(categoryRepository.findAll())
+                .filter(c -> name == null || c.getName().equals(name))
+                .toList();
     }
 
     @Override
@@ -50,15 +52,4 @@ public class CategoryController implements CategoryManager {
         }
         return categoryRepository.findById(id).get();
     }
-
-    @Override
-    @GetMapping("/categories/find")
-    public Category getCategoryByName(@RequestParam("name") String name) {
-        List<Category> categories = getCategories();
-        return categories.stream()
-                .filter(x -> x.getName().equals(name))
-                .findFirst()
-                .orElse(null);
-    }
-    
 }
