@@ -34,6 +34,10 @@ services:
     build:
       context: ./
       dockerfile: ./docker/DockerfileProduct
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://web-shop-db-image:3306/productsdb
+      - CATEGORYSERVICE_URL=http://category:8082
+      - SERVER_PORT=8081
     ports:
       - "8081:8081"
     networks:
@@ -47,6 +51,10 @@ services:
     build:
       context: ./
       dockerfile: ./docker/DockerfileCategory
+    environment:
+      - SERVER_PORT=8082
+      - SPRING_DATASOURCE_URL=jdbc:mysql://web-shop-db-image:3306/categoriesdb
+      - PRODUCTSERVICE_URL=http://product:8081
     ports:
       - "8082:8082"
     networks:

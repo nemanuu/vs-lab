@@ -61,7 +61,7 @@ GET http://localhost:8081/products?name=Birchermüsli
 ###
 
 # GET (FIND) by search values
-GET http://localhost:8081/products?minPrice=2&maxPrice=10
+GET http://localhost:8081/products?min-price=2&max-price=10
 
 ###
 
