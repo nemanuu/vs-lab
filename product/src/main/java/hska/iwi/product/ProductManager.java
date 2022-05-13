@@ -1,20 +1,21 @@
 package hska.iwi.product;
 
 import java.util.List;
+import org.springframework.http.ResponseEntity;
 
 public interface ProductManager {
 
 
-    List<Product> getProducts(String name, String value, Double minPrice, Double maxPrice);
+    ResponseEntity<List<Product>> getProducts(String name, String value, Double minPrice, Double maxPrice);
 
-    Product getProductById(int id);
-
-
-    int addProduct(String name, double price, int categoryId, String details);
+    ResponseEntity<Product> getProductById(int id);
 
 
-    boolean deleteProductsByCategoryId(int categoryId);
+    ResponseEntity<Void> addProduct(String name, double price, int categoryId, String details);
 
 
-    void deleteProductById(int id);
+    ResponseEntity<Boolean> deleteProductsByCategoryId(int categoryId);
+
+
+    ResponseEntity<Void> deleteProductById(int id);
 }

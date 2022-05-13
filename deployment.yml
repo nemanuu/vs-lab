@@ -1,0 +1,238 @@
+######################################################
+#                    DATABASE                        #
+######################################################
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+  labels:
+    run: mysql
+  name: mysql
+spec:
+  serviceName: mysql
+  replicas: 1
+  selector:
+    matchLabels:
+      run: mysql
+  template:
+    metadata:
+      labels:
+        run: mysql
+        app: webshop
+        version: "5.7.9"
+    spec:
+      containers:
+      - image: docker.io/saigyouu/web-shop-db-image:latest
+        name: web-shop-db-image
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: c8de110f37300a53a971749
+        - name: MYSQL_PRODUCTS_PASSWORD
+          value: 240b2c6d58ff2ce2f508b49f
+        - name: MYSQL_CATEGORIES_PASSWORD
+          value: eitooPhah4oosh2Eegh5xooy
+        - name: MYSQL_WEBSHOPUSER_PASSWORD
+          value: Ako6ieveeDoob7eeBah2lee2
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: mysql
+    app: webshop
+  name: mysql
+spec:
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    run: mysql
+
+---
+
+######################################################
+#                    PRODUCT                         #
+######################################################
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: product
+  name: product
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: product
+  template:
+    metadata:
+      labels:
+        run: product
+        app: webshop 
+        version: "1.0"
+    spec:
+      containers:
+      - image: docker.io/saigyouu/product:latest
+        name: product
+        env:
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:mysql://mysql:3306/productsdb"
+        - name: CATEGORYSERVICE_URL
+          value: "http://category:8082"
+        - name: SERVER_PORT
+          value: "8080"
+        - name: SPRING_DATASOURCE_USERNAME
+          value: productuser
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: 240b2c6d58ff2ce2f508b49f
+        ports:
+        - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: product
+    app: webshop
+  name: product
+spec:
+  ports:
+  - port: 8081
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    run: product
+
+---
+
+######################################################
+#                    CATEGORY                        #
+######################################################
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: category
+  name: category
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: category
+  template:
+    metadata:
+      labels:
+        run: category
+        app: webshop 
+        version: "1.0"
+    spec:
+      containers:
+      - image: docker.io/saigyouu/category:latest
+        name: category
+        env:
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:mysql://mysql:3306/categoriesdb"
+        - name: PRODUCTSERVICE_URL
+          value: "http://product:8081"
+        - name: SERVER_PORT
+          value: "8080"
+        - name: SPRING_DATASOURCE_USERNAME
+          value: categoryuser
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: eitooPhah4oosh2Eegh5xooy          
+        ports:
+        - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: category
+    app: webshop
+  name: category
+spec:
+  ports:
+  - port: 8082
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    run: category
+
+---
+
+######################################################
+#                    APACHE                          #
+######################################################
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: apache
+  name: apache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: apache
+  template:
+    metadata:
+      labels:
+        run: apache
+    spec:
+      containers:
+      - image: docker.io/saigyouu/apache:latest
+        imagePullPolicy: Always
+        name: apache
+        ports:
+        - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: apache
+  name: apache
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: apache
+  type: LoadBalancer
