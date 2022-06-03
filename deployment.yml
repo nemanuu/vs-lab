@@ -41,13 +41,25 @@ spec:
         name: web-shop-db-image
         env:
         - name: MYSQL_ROOT_PASSWORD
-          value: c8de110f37300a53a971749
+          valueFrom:
+            secretKeyRef:
+              name: databasesecret
+              key: mysqlrootpassword
         - name: MYSQL_PRODUCTS_PASSWORD
-          value: 240b2c6d58ff2ce2f508b49f
+          valueFrom:
+            secretKeyRef:
+              name: databasesecret
+              key: mysqlproductspassword
         - name: MYSQL_CATEGORIES_PASSWORD
-          value: eitooPhah4oosh2Eegh5xooy
+          valueFrom:
+            secretKeyRef:
+              name: databasesecret
+              key: mysqlcategoriespassword
         - name: MYSQL_WEBSHOPUSER_PASSWORD
-          value: Ako6ieveeDoob7eeBah2lee2
+          valueFrom:
+            secretKeyRef:
+              name: databasesecret
+              key: mysqlwebshopuserpassword
         ports:
         - containerPort: 3306
         volumeMounts:
@@ -57,6 +69,19 @@ spec:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
           claimName: mysql-pv-claim
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: databasesecret
+  namespace: default
+stringData:
+  mysqlrootpassword: c8de110f37300a53a971749
+  mysqlproductspassword: 240b2c6d58ff2ce2f508b49f
+  mysqlcategoriespassword: eitooPhah4oosh2Eegh5xooy
+  mysqlwebshopuserpassword: Ako6ieveeDoob7eeBah2lee2
 
 ---
 
