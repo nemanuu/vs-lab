@@ -6,21 +6,19 @@
 
         <!-- mysql Konfiguration -->
         <!--Note: 'web-shop-db-image' ist the url you give in the '../docker-compose.yml' as link alias -->
-        <property name="connection.url">jdbc:mysql://web-shop-db-image:3306/webshop</property>
-        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://web-shop-db-image/webshop</property>
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="connection.username">webshopuser</property>
         <property name="connection.password">Ako6ieveeDoob7eeBah2lee2</property>
         <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
         <property name="current_session_context_class">thread</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
         <property name="hibernate.format_sql">true</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.connection.autoReconnect">true</property>
 
         <property name="hibernate.hbm2ddl.auto">update</property>
 
-        <mapping class="hska.iwi.eShopMaster.model.database.dataobjects.Category"/>
-        <mapping class="hska.iwi.eShopMaster.model.database.dataobjects.Product"/>
         <mapping class="hska.iwi.eShopMaster.model.database.dataobjects.User"/>
         <mapping class="hska.iwi.eShopMaster.model.database.dataobjects.Role"/>
 
