@@ -137,7 +137,10 @@ spec:
         - name: SPRING_DATASOURCE_USERNAME
           value: productuser
         - name: SPRING_DATASOURCE_PASSWORD
-          value: 240b2c6d58ff2ce2f508b49f
+          valueFrom:
+            secretKeyRef:
+              name: databasesecret
+              key: mysqlproductspassword
         ports:
         - containerPort: 8080
 
@@ -195,7 +198,10 @@ spec:
         - name: SPRING_DATASOURCE_USERNAME
           value: categoryuser
         - name: SPRING_DATASOURCE_PASSWORD
-          value: eitooPhah4oosh2Eegh5xooy          
+          valueFrom:
+            secretKeyRef:
+              name: databasesecret
+              key: mysqlcategoriespassword       
         ports:
         - containerPort: 8080
 
