@@ -1,12 +1,11 @@
-package hska.iwi.eShopMaster.model.businessLogic.manager;
-
-import hska.iwi.eShopMaster.model.businessLogic.dataobjects.ProductView;
+package hska.iwi.eShopMaster.model.businessLogic.rest;
 
 import java.util.List;
 
-public interface ProductManager {
+import hska.iwi.eShopMaster.model.businessLogic.dataobjects.ProductView;
 
-	public List<ProductView> getProducts();
+public interface ProductService {
+    public List<ProductView> getProducts();
 
 	public ProductView getProductById(int id);
 
@@ -19,6 +18,4 @@ public interface ProductManager {
 	public boolean deleteProductsByCategoryId(int categoryId);
 	
     public void deleteProductById(int id);
-    
-	
 }

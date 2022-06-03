@@ -7,6 +7,9 @@ services:
       dockerfile: ./docker/Dockerfile
     ports:
       - "8888:8080"
+    environment:
+      - PRODUCTSERVICE_URL=http://product:8081
+      - CATEGORYSERVICE_URL=http://category:8082
     networks:
       local_dev_net:
           aliases:

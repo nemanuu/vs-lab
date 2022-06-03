@@ -1,6 +1,7 @@
 package hska.iwi.eShopMaster.controller;
 
-import hska.iwi.eShopMaster.model.database.dataAccessObjects.ProductDAO;
+import hska.iwi.eShopMaster.model.businessLogic.rest.Factory;
+import hska.iwi.eShopMaster.model.businessLogic.rest.ProductService;
 import hska.iwi.eShopMaster.model.database.dataobjects.User;
 
 import java.util.Map;
@@ -18,6 +19,7 @@ public class DeleteProductAction extends ActionSupport {
 	private int id;
 
 	public String execute() throws Exception {
+		ProductService productService = Factory.getProductService();
 		
 		String res = "input";
 		
@@ -26,7 +28,7 @@ public class DeleteProductAction extends ActionSupport {
 		
 		if(user != null && (user.getRole().getTyp().equals("admin"))) {
 
-			new ProductDAO().deleteById(id);
+			productService.deleteProductById(id);
 			{
 				res = "success";
 			}

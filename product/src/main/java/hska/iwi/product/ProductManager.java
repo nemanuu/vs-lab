@@ -11,7 +11,7 @@ public interface ProductManager {
     ResponseEntity<Product> getProductById(int id);
 
 
-    ResponseEntity<Void> addProduct(Product product);
+    ResponseEntity<Integer> addProduct(Product product);
 
 
     ResponseEntity<Boolean> deleteProductsByCategoryId(int categoryId);

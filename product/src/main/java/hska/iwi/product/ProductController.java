@@ -27,7 +27,7 @@ public class ProductController implements ProductManager {
             @RequestParam(value = "max-price", required = false) Double maxPrice) {
 
         List<Product> products = Streamable.of(productRepository.findAll())
-        .filter(p -> value == null || p.getName().contains(value))
+        .filter(p -> value == null || p.getName().contains(value) || p.getDetails().contains(value))
         .filter(p -> name == null || p.getName().equals(name))
         .filter(p -> minPrice == null || p.getPrice() >= minPrice)
         .filter(p -> maxPrice == null || p.getPrice() <= maxPrice)
@@ -52,13 +52,22 @@ public class ProductController implements ProductManager {
 
     @Override
     @PostMapping("/products")
-    public ResponseEntity<Void> addProduct(@RequestBody Product product) {
-
+    public ResponseEntity<Integer> addProduct(@RequestBody Product product) {
         if (!categoryWebClient.categoryExists(product.getCategoryId())) {
             throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "CategoryId does not exist.");
         }
+
+        boolean namePresent = !Streamable.of(productRepository.findAll())
+            .filter(c -> c.getName().equals(product.getName()))
+            .isEmpty();
+
+        if(namePresent) {
+            throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Name already present");
+        }
+
         productRepository.save(product);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+
+        return new ResponseEntity<>(product.getId(), HttpStatus.CREATED);
     }
 
     @Override

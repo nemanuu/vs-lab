@@ -27,6 +27,14 @@ public class CategoryController implements CategoryManager {
     @Override
     @PostMapping("/categories")
     public ResponseEntity<Void> addCategory(@RequestBody Category category) {
+        boolean namePresent = !Streamable.of(categoryRepository.findAll())
+            .filter(c -> c.getName().equals(category.getName()))
+            .isEmpty();
+
+        if(namePresent) {
+            throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Name already present");
+        }
+        
         categoryRepository.save(category);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

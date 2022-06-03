@@ -2,65 +2,54 @@ package hska.iwi.eShopMaster.model.businessLogic.manager.impl;
 
 import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.ProductManager;
-import hska.iwi.eShopMaster.model.database.dataAccessObjects.ProductDAO;
-import hska.iwi.eShopMaster.model.database.dataobjects.Category;
-import hska.iwi.eShopMaster.model.database.dataobjects.Product;
+import hska.iwi.eShopMaster.model.businessLogic.rest.Factory;
+import hska.iwi.eShopMaster.model.businessLogic.rest.ProductService;
+import hska.iwi.eShopMaster.model.businessLogic.dataobjects.Category;
+import hska.iwi.eShopMaster.model.businessLogic.dataobjects.ProductView;
 
 import java.util.List;
 
+import org.springframework.web.reactive.function.client.WebClientException;
+
 public class ProductManagerImpl implements ProductManager {
-	private ProductDAO helper;
-	
-	public ProductManagerImpl() {
-		helper = new ProductDAO();
-	}
+	private ProductService helper = Factory.getProductService();
 
-	public List<Product> getProducts() {
-		return helper.getObjectList();
+	public List<ProductView> getProducts() {
+		return helper.getProducts();
 	}
 	
-	public List<Product> getProductsForSearchValues(String searchDescription,
+	public List<ProductView> getProductsForSearchValues(String searchDescription,
 			Double searchMinPrice, Double searchMaxPrice) {	
-		return new ProductDAO().getProductListByCriteria(searchDescription, searchMinPrice, searchMaxPrice);
+		return helper.getProductsForSearchValues(searchDescription, searchMinPrice, searchMaxPrice);
 	}
 
-	public Product getProductById(int id) {
-		return helper.getObjectById(id);
+	public ProductView getProductById(int id) {
+		return helper.getProductById(id);
 	}
 
-	public Product getProductByName(String name) {
-		return helper.getObjectByName(name);
+	public ProductView getProductByName(String name) {
+		return helper.getProductByName(name);
 	}
 	
 	public int addProduct(String name, double price, int categoryId, String details) {
-		int productId = -1;
-		
 		CategoryManager categoryManager = new CategoryManagerImpl();
 		Category category = categoryManager.getCategory(categoryId);
-		
-		if(category != null){
-			Product product;
-			if(details == null){
-				product = new Product(name, price, category);	
-			} else{
-				product = new Product(name, price, category, details);
-			}
-			
-			helper.saveObject(product);
-			productId = product.getId();
-		}
-			 
-		return productId;
+
+		return helper.addProduct(name, price, category.getId(), details);
 	}
 	
 
 	public void deleteProductById(int id) {
-		helper.deleteById(id);
+		helper.deleteProductById(id);
 	}
 
 	public boolean deleteProductsByCategoryId(int categoryId) {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			helper.deleteProductsByCategoryId(categoryId);
+			return true;
+		} catch (WebClientException e) {
+			return false;
+		}
 	}
 
 }
