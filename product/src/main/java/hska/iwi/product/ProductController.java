@@ -52,12 +52,11 @@ public class ProductController implements ProductManager {
 
     @Override
     @PostMapping("/products")
-    public ResponseEntity<Void> addProduct(@RequestParam("name") String name, @RequestParam("price") double price, @RequestParam("categoryId") int categoryId, @RequestParam("details") String details) {
+    public ResponseEntity<Void> addProduct(@RequestBody Product product) {
 
-        if (!categoryWebClient.categoryExists(categoryId)) {
+        if (!categoryWebClient.categoryExists(product.getCategoryId())) {
             throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "CategoryId does not exist.");
         }
-        Product product = new Product().setName(name).setPrice(price).setDetails(details).setCategoryId(categoryId);
         productRepository.save(product);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

@@ -9,7 +9,7 @@ public interface CategoryManager {
 
     ResponseEntity<Category> getCategory(int id);
 
-    ResponseEntity<Void> addCategory(String name);
+    ResponseEntity<Void> addCategory(Category category);
 
     ResponseEntity<Void> deleteCategoryById(int id);
 

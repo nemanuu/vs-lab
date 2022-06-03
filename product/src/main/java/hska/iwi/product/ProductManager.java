@@ -11,7 +11,7 @@ public interface ProductManager {
     ResponseEntity<Product> getProductById(int id);
 
 
-    ResponseEntity<Void> addProduct(String name, double price, int categoryId, String details);
+    ResponseEntity<Void> addProduct(Product product);
 
 
     ResponseEntity<Boolean> deleteProductsByCategoryId(int categoryId);

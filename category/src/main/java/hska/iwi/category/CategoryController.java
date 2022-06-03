@@ -26,8 +26,7 @@ public class CategoryController implements CategoryManager {
 
     @Override
     @PostMapping("/categories")
-    public ResponseEntity<Void> addCategory(@RequestParam("name") String name) {
-        Category category = new Category().setName(name);
+    public ResponseEntity<Void> addCategory(@RequestBody Category category) {
         categoryRepository.save(category);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
