@@ -225,6 +225,58 @@ spec:
 ---
 
 ######################################################
+#                    LEGACY                          #
+######################################################
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: legacywebshop
+  name: legacywebshop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: legacywebshop
+  template:
+    metadata:
+      labels:
+        run: legacywebshop
+        app: webshop 
+        version: "1.0"
+    spec:
+      containers:
+      - image: docker.io/saigyouu/legacywebshop:latest
+        name: legacywebshop
+        env:
+        - name: PRODUCTSERVICE_URL
+          value: "http://product:8081"
+        - name: CATEGORYSERVICE_URL
+          value: "http://category:8082"  
+        ports:
+        - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: legacywebshop
+    app: webshop
+  name: legacywebshop
+spec:
+  ports:
+  - port: 8888
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    run: legacywebshop
+
+---
+
+######################################################
 #                    APACHE                          #
 ######################################################
 

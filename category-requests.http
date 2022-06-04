@@ -11,7 +11,14 @@ GET http://localhost:8082/categories
 ###
 
 # POST Kartoffelprodukte
-POST http://localhost:8082/categories?name=Kartoffelprodukte
+POST http://localhost:8082/categories
+Content-Type: application/json
+
+{
+    "name": "Kartoffelprodukte"
+}
+
+#name=Kartoffelprodukte
 
 ###
 

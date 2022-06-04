@@ -11,7 +11,30 @@ GET http://localhost:8081/products/
 ###
 
 # POST Pommes
-POST http://localhost:8081/products?name=Premium Pommes&price=11&categoryId=1&details=Lecker Premium Pommes!
+POST http://localhost:8081/products
+Content-Type: application/json
+
+{
+    "name": "Premium Pommes",
+    "price": 11,
+    "categoryId": 1,
+    "details": "Lecker Premium Pommes!"
+}
+
+###
+
+POST http://192.168.49.2:32765/product/products
+Content-Type: application/json
+
+{
+    "name": "Premium Pommes",
+    "price": 11,
+    "categoryId": 1,
+    "details": "Lecker Premium Pommes!"
+}
+
+
+#name=Premium Pommes&price=11&categoryId=1&details=Lecker Premium Pommes!
 
 ###
 
