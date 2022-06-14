@@ -318,8 +318,8 @@ kind: ConfigMap
 metadata:
   name: webshop-conf
 data:
-  product-service-url: "http://category:8080"
-  category-service-url: "http://category:8081"
+  product-service-url: "http://category:8081"
+  category-service-url: "http://category:8082"
 
 ---
 
